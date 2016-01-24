@@ -13,7 +13,7 @@
 
       <?php
 
-if ($_POST['_handle_']) {
+if (isset($_POST['_handle_'])) {
   handleForm();
 } else {
   printForm("","","","");
@@ -82,4 +82,55 @@ function handleForm() {
       }
     }
 printForm($f, $s, $e, $r);
-}//checkForm
+} //checkForm
+
+function printForm($f, $s, $e, $r) {
+  echo "<form action = ".$_SERVER['PHP_SELF']." method='post'>";
+}
+echo "
+<table>
+  <tr>
+    <td>Your first name</td>
+    <td><input type='text' length='32' name='firstname' value='".$f."'/></td>
+  </tr>
+  <tr>
+    <td>Your last name</td>
+    <td><input type='text' length='32' name='lastname' value='".$s."'/></td>
+  </tr>
+  <tr>
+    <td>Your email address</td>
+    <td><input type='text' length='64' name='email' value='".$e."' /></td>
+  </tr>
+  <tr>
+    <td>Choose your role</td>
+    <td><select name='role' size='1'>
+
+";
+        if ($r == "owner") {
+          echo "option value='user'>User</option>
+          <option value='guest'>Guest</option>
+          <option value='admin'>Administrator</option>
+          <option value='owner' selected>Owner</option>";
+        } elseif ($r == 'guest') {
+          echo "option value='user'>User</option>
+          <option value='guest' selected>Guest</option>
+          <option value='admin'>Administrator</option>
+          <option value='owner'>Owner</option>";
+        } elseif ($r == "admin") {
+          echo "option value='user'>User</option>
+          <option value='guest'>Guest</option>
+          <option value='admin' selected>Administrator</option>
+          <option value='owner'>Owner</option>";
+        } else {
+          echo "<option value='user' selected>User</option>
+          <option value='guest'>Guest</option>
+          <option value='admin'>Administrator</option>
+          <option value='owner'>Owner</option>";
+        }
+      ?>
+    </select>
+  </td>
+</tr>
+<tr>
+  <td><input type='submit' name='save' value='Save Record'/></td>
+  <td><input type='submit' name='amend' value='Save Record'/></td>
