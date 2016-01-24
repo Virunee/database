@@ -29,7 +29,7 @@ function handleForm() {
 
   $f = $s = $e = $r = "";
 
-  if ($_POST['save']) {
+  if (isset($_POST['save'])) {
     //save one record
     $statement = "INSERT INTO users (firstname, lastname, email, type) VALUES
     ('$firstname','$lastname','$email','$role')";
@@ -38,7 +38,7 @@ function handleForm() {
         } else {
       echo "<h3 style='color: red'>There was a problem saving your data</h3>";
         };
-} elseif ($_POST['amend']) {
+} elseif (isset($_POST['amend'])) {
   //alter one record
   $statement = "UPDATE users SET firstname='$firstname', lastname='$lastname', type='$role' WHERE email='$email'";
       if ($result = mysqli_query($db, $statement)) {
@@ -46,7 +46,7 @@ function handleForm() {
       } else {
     echo "<h3 style='color: red'>There was a problem updating your data</h3>";
       }
-} elseif ($_POST['delete']) {
+} elseif (isset($_POST['delete'])) {
     //delete one record
     $statement = "DELETE FROM users WHERE email='$email'";
         if ($result = mysqli_query($db, $statement)) {
@@ -54,10 +54,10 @@ function handleForm() {
         } else {
       echo "<h3 style='color: red'>There was a problem deleting your data. Make sure that you entered the correct email address.</h3>";
         }
-} elseif ($_POST['view']) {
+} elseif (isset($_POST['view'])) {
   //view one record
   $statement="SELECT * FROM users WHERE email='$email'";
-        if ($result=mysqli_query($db, $statement)) {
+        if ($result = mysqli_query($db, $statement)) {
       echo "<h3>Your query returned</h3>";
       $data = mysqli_fetch_object($result);
       $f = $data->firstname;
@@ -73,7 +73,8 @@ function handleForm() {
       if ($result = mysqli_query($db, $statement)) {
         echo "<h3>Your query returned</h3><table border='1'>";
         while ($data = mysqli_fetch_object($result)) {
-          echo "<tr><td>$data->email</td><td>$data->type</td></tr>";
+          echo "<tr><td>$data->firstname</td><td>$data->lastname</td>
+          <td>$data->email</td><td>$data->type</td></tr>";
       }
       echo "</table>";
     }
@@ -86,8 +87,7 @@ printForm($f, $s, $e, $r);
 
 function printForm($f, $s, $e, $r) {
   echo "<form action = ".$_SERVER['PHP_SELF']." method='post'>";
-}
-echo "
+  echo "
 <table>
   <tr>
     <td>Your first name</td>
@@ -127,10 +127,20 @@ echo "
           <option value='admin'>Administrator</option>
           <option value='owner'>Owner</option>";
         }
+      }
       ?>
     </select>
   </td>
 </tr>
 <tr>
   <td><input type='submit' name='save' value='Save Record'/></td>
-  <td><input type='submit' name='amend' value='Save Record'/></td>
+  <td><input type='submit' name='amend' value='Amend Record'/></td>
+  <td><input type='submit' name='view' value='View Record'/></td>
+  <td><input type='submit' name='delete' value='Delete Record'/></td>
+  <td><input type='submit' name='showall' value='Show all Records'/></td>
+</tr>
+<input type="hidden" name='_handle_' value='1' />
+</table>
+</form>
+</body>
+</html>
